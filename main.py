@@ -138,19 +138,31 @@ def display_offers(offers):
         month = int(input("Mjesec po kojem zelis pretraziti ponude(unesi u broju, npr. 11): "))
         for offer in offers:
             offer_date = datetime.strptime(offer['date'], '%Y-%m-%d')
-            counter = 0
-            while counter == 0:
-                if offer_date.month == int(month):
-                    print(f"Offer {offer['offer_number']} for {offer['customer']} on {offer['date']}")
-                    for item in offer['items']:
-                        print(f"{item['product_name']} x{item['quantity']} - {item['price'] * item['quantity']} EUR")
-                        counter += 1 #napravi da printa samo jednom
-                else: 
+            if offer_date.month == int(month):
+                print(f"Offer {offer['offer_number']} for {offer['customer']} on {offer['date']}")
+                for item in offer['items']:
+                    print(f"{item['product_name']} x{item['quantity']} - {item['price'] * item['quantity']} EUR")
+                else:
                     print("nema ponuda za ovaj mjesec")
     elif choice == 3:
-        #dovrsi
-    else:
-        print("neam ovog izbora")
+        offer_number_to_find = 1  # Traženi ID ponude
+
+        # Pretraga po ID-u
+        found_offer = next((offer for offer in offers if offer['offer_number'] == offer_number_to_find), None)
+        if found_offer:
+            print("Ponuda pronađena:\n")
+            print(f"ID ponude: {found_offer['offer_number']}")
+            print(f"Kupac: {found_offer['customer']}")
+            print(f"Datum: {found_offer['date']}")
+            print("\nProizvodi u ponudi:")
+            for item in found_offer['items']:
+                print(f"- {item['product_name']} ({item['description']}): {item['quantity']} x {item['price']} = {item['item_total']}")
+                print(f"\nSubtotal: {found_offer['sub_total']}")
+                print(f"PDV: {found_offer['tax']}")
+                print(f"Ukupno: {found_offer['total']}")
+            else:
+                print(f"Ponuda sa ID {offer_number_to_find} nije pronađena.")
+
                     
 
 
